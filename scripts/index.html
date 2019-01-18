@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    Modern / Legacy POC
+  </title>
+  <script type="module" src="main-e6f6f924c02d471675c8.mjs"></script>
+  <script type="module" src="runtime-f1da623c5fc734ec93b9.mjs"></script>
+</head>
+<body>
+  <script>
+    // https://gist.github.com/samthor/64b114e4a4f539915a95b91ffd340acc
+    (function() {
+      var check = document.createElement('script');
+      if (!('noModule' in check) && 'onbeforeload' in check) {
+        var support = false;
+        document.addEventListener('beforeload', function(e) {
+          if (e.target === check) {
+            support = true;
+          } else if (!e.target.hasAttribute('nomodule') || !support) {
+            return;
+          }
+          e.preventDefault();
+        }, true);
+        check.type = 'module';
+        check.src = '.';
+        document.head.appendChild(check);
+        check.remove();
+      }
+    }());
+  </script>
+  <script nomodule src="main-1188f159901a31c4729d.js"></script>
+  <script nomodule src="runtime-f1da623c5fc734ec93b9.js"></script>
+</body>
+
+</html>
