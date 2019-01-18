@@ -23,7 +23,8 @@ function setScripts() {
 
   const indexHtml = indexHtmlParts.join('\n');
   fs.unlinkSync('./dist/index.html');
-  fs.writeFileSync('./dist/index.html', indexHtml)
+  fs.writeFileSync('./dist/index.html', indexHtml);
+  process.exit();
 }
 
 setScripts();

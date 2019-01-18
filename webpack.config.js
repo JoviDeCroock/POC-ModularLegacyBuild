@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const legacyBrowsersList = [
   ">0.25%",
@@ -27,7 +26,7 @@ function makeConfig(mode) {
   const isProduction = NODE_ENV === 'production';
 
   // Build plugins
-  const plugins = [new CleanWebpackPlugin(['dist'])];
+  const plugins = [];
   plugins.push(new HtmlWebpackPlugin({ template: './index.html' }))
   if (!isProduction) { plugins.push(new webpack.HotModuleReplacementPlugin()) }
 
