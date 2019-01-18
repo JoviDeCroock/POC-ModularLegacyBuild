@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const legacyBrowsersList = [
   ">0.25%",
@@ -58,17 +57,7 @@ function makeConfig(mode) {
       publicPath: '/',
     },
     optimization: {
-      concatenateModules: false,
       runtimeChunk: 'single',
-      minimizer: [
-        new TerserPlugin({
-          sourceMap: true,
-          terserOptions: {
-            mangle: { properties: /(^_|_$)/ },
-            safari10: true,
-          },
-        })
-      ],
     },
     plugins,
     module: {
