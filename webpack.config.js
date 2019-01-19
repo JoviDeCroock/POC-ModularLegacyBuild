@@ -55,9 +55,6 @@ function makeConfig(mode) {
       path: path.resolve(__dirname, './dist'),
       publicPath: '/',
     },
-    optimization: {
-      runtimeChunk: 'single',
-    },
     plugins,
     module: {
       rules: [
