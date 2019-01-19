@@ -59,7 +59,6 @@ function makeConfig(mode) {
     module: {
       rules: [
         {
-          // Makes our babel-loader the lord and savior over our TypeScript
           test: /\.js/,
           loader: 'babel-loader',
           options: {
