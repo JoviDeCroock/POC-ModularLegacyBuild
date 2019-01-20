@@ -2,6 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const frameworkVendors = [
+  'react',
+  'react-dom',
+];
+
 const legacyBrowsersList = [
   ">0.25%",
   "not ie 11",
@@ -34,7 +39,10 @@ function makeConfig(mode) {
   return {
     mode: process.env.NODE_ENV || 'development',
     devtool: 'source-map',
-    entry: { main: './src/index.js' },
+    entry: {
+      main: './src/index.js',
+      frameworkVendors,
+    },
     context: path.resolve(__dirname, './'),
     stats: 'normal',
     devServer: {
@@ -60,11 +68,16 @@ function makeConfig(mode) {
       rules: [
         {
           test: /\.js/,
+          include: [
+            path.resolve(__dirname, "src"),
+            // path.resolve(__dirname, "node_modules/<some_lib>")
+          ],
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
             babelrc: false,
             presets: [
+              "@babel/preset-react",
               [
                 "@babel/preset-env",
                 {
@@ -77,8 +90,18 @@ function makeConfig(mode) {
               ],
             ],
             plugins: [
+              mode === 'legacy' && [
+                "@babel/plugin-transform-runtime",
+                {
+                  "corejs": 2
+                }
+              ],
+              "@babel/plugin-syntax-import-meta",
               "@babel/plugin-syntax-dynamic-import",
-            ],
+              "@babel/plugin-proposal-export-namespace-from",
+              "@babel/plugin-proposal-export-default-from",
+              "@babel/plugin-proposal-function-bind",
+            ].filter(Boolean),
           }
         },
       ],
