@@ -62,6 +62,7 @@ function makeConfig(mode) {
           test: /\.js/,
           loader: 'babel-loader',
           options: {
+            cacheDirectory: true,
             babelrc: false,
             presets: [
               [
