@@ -40,8 +40,7 @@ function makeConfig(mode) {
     mode: process.env.NODE_ENV || 'development',
     devtool: 'source-map',
     entry: {
-      main: './src/index.js',
-      frameworkVendors,
+      main: './src/index.js'
     },
     context: path.resolve(__dirname, './'),
     stats: 'normal',
@@ -62,6 +61,10 @@ function makeConfig(mode) {
       filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.mjs' : '.js'}` : `[name]-[hash]${mode === 'modern' ? '.mjs' : '.js'}`,
       path: path.resolve(__dirname, './dist'),
       publicPath: '/',
+    },
+    optimization: {
+      concatenateModules: false,
+      splitChunks: { chunks: 'all' },
     },
     plugins,
     module: {
@@ -90,10 +93,11 @@ function makeConfig(mode) {
               ],
             ],
             plugins: [
-              mode === 'legacy' && [
+              [
                 "@babel/plugin-transform-runtime",
                 {
-                  "corejs": 2
+                  corejs: mode === 'modern' ? false: 2,
+                  useESModules: true,
                 }
               ],
               "@babel/plugin-syntax-import-meta",
@@ -101,7 +105,7 @@ function makeConfig(mode) {
               "@babel/plugin-proposal-export-namespace-from",
               "@babel/plugin-proposal-export-default-from",
               "@babel/plugin-proposal-function-bind",
-            ].filter(Boolean),
+            ],
           }
         },
       ],

@@ -4,7 +4,8 @@ import app from './App';
 import Application from './Main';
 
 async function initialize() {
-  console.log(await app())
+  const result = await app();
+  console.log(result)
 }
 
 console.log('HI!');
