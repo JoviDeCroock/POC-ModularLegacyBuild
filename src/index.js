@@ -8,13 +8,7 @@ async function initialize() {
   console.log(result)
 }
 
-console.log('HI!');
 initialize();
-
-// Inject React root element
-if (document.body) {
-  document.body.innerHTML += '<div id="root"></div>';
-}
 
 // Render React app in the root element
 const rootEl = document.getElementById('root');
