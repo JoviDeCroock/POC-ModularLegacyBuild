@@ -54,5 +54,6 @@ EVERGREEN:
     vendors~main-5b8745cfb31d13a60507.mjs.map    252 KiB       1  [emitted]  vendors~main
 ```
 
+Safe to note that the parse time for EVERGREEN is close to half of the nevergreen.
 
 These evergreen vendor bundles would be a lot smaller if they were exported as an esModule instead of an es5 module.
