@@ -18,7 +18,7 @@ module.exports = {
           }
         ]
       ],
-      plugins,
+      plugins: [...plugins],
     },
     modern: {
       presets: [
@@ -31,7 +31,7 @@ module.exports = {
           }
         ]
       ],
-      plugins,
+      plugins: [...plugins],
     }
   }
 };
