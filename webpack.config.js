@@ -2,16 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const frameworkVendors = [
-  'react',
-  'react-dom',
-];
-
-const legacyBrowsersList = [
-  ">0.25%",
-  "not ie 11",
-  "not op_mini all"
-];
+const legacyBrowsersList = ['last 2 versions', 'ie >= 11', 'safari >= 7'];
 
 const modernBrowsersList = [
   'last 2 Chrome versions',
@@ -25,6 +16,9 @@ const modernBrowsersList = [
   'last 2 Edge versions',
   'not Edge < 15',
 ];
+
+const modernTargets = { esmodules: true };
+const legacyTargets = { targets: legacyBrowsersList };
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
@@ -84,27 +78,15 @@ function makeConfig(mode) {
               [
                 "@babel/preset-env",
                 {
-                  modules: false,
-                  useBuiltIns: 'entry',
-                  targets: {
-                    browsers: mode === 'modern' ? modernBrowsersList : legacyBrowsersList
-                  },
+                  useBuiltIns: mode === 'modern' ? 'usage' : 'entry',
+                  targets: mode === 'modern' ? modernBrowsersList : legacyBrowsersList,
                 }
               ],
             ],
             plugins: [
-              [
-                "@babel/plugin-transform-runtime",
-                {
-                  corejs: mode === 'modern' ? false: 2,
-                  useESModules: true,
-                }
-              ],
-              "@babel/plugin-syntax-import-meta",
+              "@babel/plugin-transform-runtime",
               "@babel/plugin-syntax-dynamic-import",
-              "@babel/plugin-proposal-export-namespace-from",
-              "@babel/plugin-proposal-export-default-from",
-              "@babel/plugin-proposal-function-bind",
+              "@babel/plugin-proposal-export-default-from"
             ],
           }
         },
