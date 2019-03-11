@@ -16,8 +16,6 @@ class HtmlWebpackEsmodulesPlugin {
       HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
         ID,
         ({ plugin, bodyTags: body, headTags: head }, cb) => {
-          console.log('body', [...body]);
-          console.log('head', [...head]);
           const targetDir = compiler.options.output.path;
           // get stats, write to disk
           const htmlName = path.basename(plugin.options.filename);

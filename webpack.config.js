@@ -39,7 +39,7 @@ function makeConfig(mode) {
     },
     output: {
       chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
-      filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.mjs' : '.js'}`,
+      filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.modern.js' : '.js'}`,
       path: path.resolve(__dirname, './dist'),
       publicPath: '/',
     },
@@ -72,6 +72,13 @@ function makeConfig(mode) {
     module: {
       rules: [
         {
+          // Support preact.
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto',
+        },
+
+        {
           test: /\.js/,
           include: [
             path.resolve(__dirname, "src"),
@@ -83,6 +90,13 @@ function makeConfig(mode) {
           }
         },
       ],
+    },
+    resolve: {
+      alias: {
+        "react": "preact/compat",
+        "react-dom": "preact/compat",
+        "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
+      },
     },
   };
 };
