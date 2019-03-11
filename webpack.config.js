@@ -2,20 +2,27 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const HtmlWebpackEsmodulesPlugin = require('./scripts/webpack-esmodule-plugin');
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
   const isProduction = NODE_ENV === 'production';
   // Build plugins
   const plugins = [];
-  plugins.push(new HtmlWebpackPlugin({ template: './index.html' }))
+
+  // multiple builds in production
+  if (isProduction) {
+    // TODO
+    // plugins.push(new HtmlWebpackEsmodulesPlugin())
+  }
+
   if (!isProduction) { plugins.push(new webpack.HotModuleReplacementPlugin()) }
   // Return configuration
   return {
     mode: process.env.NODE_ENV || 'development',
-    devtool: 'source-map',
+    devtool: 'none',
     entry: {
-      main: mode === 'modern' ? './src/index.js' : './src/index-legacy.js',
+      main: './src/index.js',
     },
     context: path.resolve(__dirname, './'),
     stats: 'normal',
@@ -40,25 +47,43 @@ function makeConfig(mode) {
     optimization: {
       minimizer: mode === 'modern' && isProduction ? [
         new TerserWebpackPlugin({
-          test: /\.m?js$/i,
+          test: /\.m?js$/,
+          cache: true,
           sourceMap: true,
           parallel: 8,
           terserOptions: {
-            ecma: 8,
-            module: true,
-          }
+            parse: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: mode === 'modern' ? 6 : 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              ecma: mode === 'modern' ? 6 : 5,
+              comments: false,
+              ascii_only: true,
+            },
+          },
         })
       ] : undefined,
-      splitChunks: { chunks: 'all' },
+      splitChunks: { chunks: 'initial' },
     },
-    plugins,
+    plugins: [
+      new HtmlWebpackPlugin({ template: './index.html' }),
+      ...plugins
+    ],
     module: {
       rules: [
         {
           test: /\.js/,
           include: [
             path.resolve(__dirname, "src"),
-            // path.resolve(__dirname, "node_modules/<some_lib>")
           ],
           loader: 'babel-loader',
           options: {
