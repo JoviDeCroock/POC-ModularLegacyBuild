@@ -12,8 +12,7 @@ function makeConfig(mode) {
 
   // multiple builds in production
   if (isProduction) {
-    // TODO
-    // plugins.push(new HtmlWebpackEsmodulesPlugin())
+    plugins.push(new HtmlWebpackEsmodulesPlugin())
   }
 
   if (!isProduction) { plugins.push(new webpack.HotModuleReplacementPlugin()) }
@@ -39,15 +38,15 @@ function makeConfig(mode) {
       overlay: true,
     },
     output: {
-      chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.mjs' : '.js'}`,
-      filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.mjs' : '.js'}` : `[name]${mode === 'modern' ? '.mjs' : '.js'}`,
+      chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
+      filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.mjs' : '.js'}`,
       path: path.resolve(__dirname, './dist'),
       publicPath: '/',
     },
     optimization: {
       minimizer: mode === 'modern' && isProduction ? [
         new TerserWebpackPlugin({
-          test: /\.m?js$/,
+          test: /\.js$/,
           cache: true,
           sourceMap: true,
           parallel: 8,
@@ -56,18 +55,10 @@ function makeConfig(mode) {
               ecma: 8,
             },
             compress: {
-              ecma: mode === 'modern' ? 6 : 5,
-              warnings: false,
-              comparisons: false,
-              inline: 2,
-            },
-            mangle: {
-              safari10: true,
+              ecma: mode === 'modern' ? 8 : 5,
             },
             output: {
-              ecma: mode === 'modern' ? 6 : 5,
-              comments: false,
-              ascii_only: true,
+              ecma: mode === 'modern' ? 8 : 5,
             },
           },
         })
@@ -75,7 +66,7 @@ function makeConfig(mode) {
       splitChunks: { chunks: 'initial' },
     },
     plugins: [
-      new HtmlWebpackPlugin({ template: './index.html' }),
+      new HtmlWebpackPlugin({ inject: true, template: './index.html' }),
       ...plugins
     ],
     module: {

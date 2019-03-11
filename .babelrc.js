@@ -13,7 +13,6 @@ module.exports = {
             modules: false,
             targets: ['ie 9'],
             loose: true,
-            exclude: ['transform-typeof-symbol'],
           }
         ]
       ],
@@ -32,8 +31,7 @@ module.exports = {
             modules: false,
             targets: { esmodules: true },
             loose: true,
-            useBuiltIns: 'entry',
-            exclude: ['transform-typeof-symbol'],
+            useBuiltIns: 'usage',
           }
         ]
       ],
