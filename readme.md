@@ -20,6 +20,11 @@ To see this code in action:
 
 You'll see that your legacy nevergreen browser pulls the old version while the newer one pulls the recent version.
 
+Note that these steps happened with a build where polyfills were excluded for the evergreen build,
+this due to the fact that Promise, Object.assign, ... Does not need polyfilling.
+
+The current build won't have these results since I'm experimenting with newer ways of excluding polyfills.
+
 NEVERGREEN:
 ```
                                   Asset       Size  Chunks             Chunk Names
