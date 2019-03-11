@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const WebpackModules = require('webpack-modules');
 const HtmlWebpackEsmodulesPlugin = require('./scripts/webpack-esmodule-plugin');
 
 function makeConfig(mode) {
@@ -66,6 +67,7 @@ function makeConfig(mode) {
       splitChunks: { chunks: 'initial' },
     },
     plugins: [
+      new WebpackModules(),
       new HtmlWebpackPlugin({ inject: true, template: './index.html' }),
       ...plugins
     ],
