@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "postbuild": "cross-env node ./scripts/postBuild.js"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "author": "",
   "devDependencies": {
@@ -20,7 +19,7 @@
     "babel-loader": "8.0.5",
     "cross-env": "5.2.0",
     "fs-extra": "^7.0.1",
-    "html-webpack-plugin": "3.2.0",
+    "html-webpack-plugin": "4.0.0-alpha.2",
     "rimraf": "2.6.3",
     "terser-webpack-plugin": "1.2.3",
     "webpack": "4.29.6",
