@@ -79,7 +79,6 @@ function makeConfig(mode) {
           include: /node_modules/,
           type: 'javascript/auto',
         },
-
         {
           test: /\.js/,
           include: [
