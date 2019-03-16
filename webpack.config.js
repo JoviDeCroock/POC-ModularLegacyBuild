@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const WebpackModules = require('webpack-modules');
 const HtmlWebpackEsmodulesPlugin = require('./scripts/webpack-esmodule-plugin');
+const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
@@ -16,7 +17,9 @@ function makeConfig(mode) {
     plugins.push(new HtmlWebpackEsmodulesPlugin())
   }
 
-  if (!isProduction) { plugins.push(new webpack.HotModuleReplacementPlugin()) }
+  if (!isProduction) {
+    plugins.push(new webpack.HotModuleReplacementPlugin())
+  }
   // Return configuration
   return {
     mode: process.env.NODE_ENV || 'development',
@@ -25,7 +28,7 @@ function makeConfig(mode) {
       main: './src/index.js',
     },
     context: path.resolve(__dirname, './'),
-    stats: 'normal',
+    stats: 'minimal',
     devServer: {
       contentBase: path.join(__dirname, 'dist'),
       host: 'localhost',
@@ -96,12 +99,13 @@ function makeConfig(mode) {
       alias: {
         "react": "preact/compat",
         "react-dom": "preact/compat",
-        "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
+        // "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
       },
+      plugins: [new ModernResolutionPlugin()],
     },
   };
 };
 
 module.exports = process.env.NODE_ENV === 'production' ?
-  [makeConfig('modern'), makeConfig('legacy')] :
+  [makeConfig('legacy'), makeConfig('modern')] :
   makeConfig('modern');
