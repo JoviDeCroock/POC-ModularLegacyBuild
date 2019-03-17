@@ -10,17 +10,19 @@ class ModernResolverPlugin {
   }
 
   apply(resolver) {
-    resolver.getHook('module').tap("ModernResolverPlugin", (request, callback) => {
+    resolver.getHook('module').tap("ModernResolverPlugin", (request, context, ...args) => {
       if (request.request === 'hooked-form') {
         const modernPath = this.resolveModulePath(request.request);
         if (modernPath) {
           const obj = {
-            directory: request.directory,
-            path: request.path,
-            query: request.query,
-            request: modernPath,
+            ...request,
+            module: false,
+            query: '',
+            path: modernPath,
+            file: true,
+            directory: false,
           };
-          resolver.doResolve("resolve", obj, `resolve ${request.request} to ${resolvedComponentPath}`, callback);
+          // resolver.doResolve("resolve", obj, `resolve ${request.request} to ${resolvedComponentPath}`, null, () => console.warn('cb', arguments));
         }
       }
     });
@@ -37,7 +39,7 @@ class ModernResolverPlugin {
         const distExists = moduleContents.find((name) => name === 'dist');
         const distContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName, 'dist'));
         const hasModern = distContents.find((name) => name.includes('modern') && !name.includes('map'));
-        return path.resolve(nodeModulesPath, moduleName, 'dist', hasModern);
+        return path.resolve('dist', hasModern);
       }
     }
   }
