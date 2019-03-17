@@ -6,6 +6,7 @@ const fs = require('fs');
 class ModernResolverPlugin {
 
   constructor() {
+    // TODO!
     this.cache = {};
   }
 
@@ -32,15 +33,16 @@ class ModernResolverPlugin {
     const nodeModulesPath = path.resolve(`${process.cwd()}/node_modules/`);
     if (this.exists === undefined) {
       this.exists = fs.existsSync(nodeModulesPath);
-      if (this.exists) {
-        const contents = fs.readdirSync(nodeModulesPath);
-        const moduleExists = contents.find((name) => name === moduleName);
-        const moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName));
-        const distExists = moduleContents.find((name) => name === 'dist');
-        const distContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName, 'dist'));
-        const hasModern = distContents.find((name) => name.includes('modern') && !name.includes('map'));
-        return path.resolve('dist', hasModern);
-      }
+      if (!this.exists) return false;
+      const contents = fs.readdirSync(nodeModulesPath);
+      const moduleExists = contents.find((name) => name === moduleName);
+      if (!moduleExists) return false;
+      const moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName));
+      const distExists = moduleContents.find((name) => name === 'dist');
+      if (!distExists) return false;
+      const distContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName, 'dist'));
+      const hasModern = distContents.find((name) => name.includes('modern') && !name.includes('map'));
+      return path.resolve('dist', hasModern);
     }
   }
 }
