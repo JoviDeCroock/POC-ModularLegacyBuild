@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const WebpackModules = require('webpack-modules');
-const HtmlWebpackEsmodulesPlugin = require('./scripts/webpack-esmodule-plugin');
+const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
 const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
 
 function makeConfig(mode) {
@@ -14,7 +14,7 @@ function makeConfig(mode) {
 
   // multiple builds in production
   if (isProduction) {
-    plugins.push(new HtmlWebpackEsmodulesPlugin())
+    plugins.push(new HtmlWebpackEsmodulesPlugin({ mode }))
   }
 
   if (!isProduction) {
@@ -107,5 +107,5 @@ function makeConfig(mode) {
 };
 
 module.exports = process.env.NODE_ENV === 'production' ?
-  [makeConfig('legacy'), makeConfig('modern')] :
+  [makeConfig('modern'), makeConfig('legacy')] :
   makeConfig('modern');
