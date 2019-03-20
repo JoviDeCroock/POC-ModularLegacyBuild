@@ -1,16 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
-const WebpackModules = require('webpack-modules');
+const modules = require('webpack-modules');
 const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
 const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
+const babelConfig = require('./.babelrc');
+
+const env = babelConfig.env;
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
   const isProduction = NODE_ENV === 'production';
   // Build plugins
-  const plugins = [];
+  const plugins = [new modules()];
 
   // multiple builds in production
   if (isProduction) {
@@ -28,7 +30,6 @@ function makeConfig(mode) {
       main: './src/index.js',
     },
     context: path.resolve(__dirname, './'),
-    stats: 'minimal',
     devServer: {
       contentBase: path.join(__dirname, 'dist'),
       host: 'localhost',
@@ -48,29 +49,9 @@ function makeConfig(mode) {
       publicPath: '/',
     },
     optimization: {
-      minimizer: mode === 'modern' && isProduction ? [
-        new TerserWebpackPlugin({
-          test: /\.js$/,
-          cache: true,
-          sourceMap: true,
-          parallel: 8,
-          terserOptions: {
-            parse: {
-              ecma: 8,
-            },
-            compress: {
-              ecma: mode === 'modern' ? 8 : 5,
-            },
-            output: {
-              ecma: mode === 'modern' ? 8 : 5,
-            },
-          },
-        })
-      ] : undefined,
       splitChunks: { chunks: 'initial' },
     },
     plugins: [
-      new WebpackModules(),
       new HtmlWebpackPlugin({ inject: true, template: './index.html' }),
       ...plugins
     ],
@@ -90,22 +71,23 @@ function makeConfig(mode) {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            envName: mode
+            ...env[mode],
           }
         },
       ],
     },
     resolve: {
+      mainFields: ['module', 'main', 'browser'],
       alias: {
-        "react": "preact/compat",
-        "react-dom": "preact/compat",
+        react: 'preact/compat',
+        'react-dom': 'preact/compat',
         // "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
       },
-      plugins: [new ModernResolutionPlugin()],
+      plugins: mode === 'modern' ? [new ModernResolutionPlugin()] : undefined,
     },
   };
 };
 
 module.exports = process.env.NODE_ENV === 'production' ?
   [makeConfig('modern'), makeConfig('legacy')] :
-  makeConfig('modern');
+  makeConfig('legacy');
