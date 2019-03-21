@@ -5,10 +5,14 @@ const fs = require('fs');
 
 const ID = 'ModernResolverPlugin';
 
+const defaultIgnoredModules = ['core-js'];
+
 class ModernResolverPlugin {
 
-  constructor() {
+  constructor({ nameRegex, ignoredModules = [] } = {}) {
     this.cache = {};
+    this.nameRegex = nameRegex
+    this.ignoredModules = [...defaultIgnoredModules, ...ignoredModules];
   }
 
   apply(resolver) {
@@ -42,9 +46,11 @@ class ModernResolverPlugin {
   }
 
   resolveModulePath(moduleName) {
-    // TODO: replace process.cwd() with a cleaner alternative.
     const nodeModulesPath = path.resolve(`${process.cwd()}/node_modules/`);
+    if (this.ignoredModules.includes(moduleName) || this.ignoredModules.includes(moduleName.split('/')[0])) return false;
+    if (moduleName.startsWith('./') || moduleName.startsWith('../') || moduleName.includes('.modern')) return false;
     if (this.exists === undefined || this.exists) {
+      if (this.cache[moduleName]) return this.cache[moduleName];
       // does our node_moduels path exist?
       this.exists = fs.existsSync(nodeModulesPath);
       if (!this.exists) return false;
@@ -55,20 +61,14 @@ class ModernResolverPlugin {
       if (!moduleExists) return false;
       // Get the files from the libraray
       const moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName));
-      let distName = 'dist';
-      let distExists = moduleContents.find((name) => name === distName);
-      if (!distExists) {
-        // If dist does not exist try lib.
-        distName = 'lib';
-        distExists = moduleContents.find((name) => name === distName);
-        if (!distExists) return false;
-      };
-      // get the contents of our dist/lib.
-      const distContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName, distName));
-      // If it has a .modern that's not a source-map then we go!
-      const hasModern = distContents.find((name) => name.includes('modern') && !name.includes('map'));
-      if (!hasModern) return false;
-      return path.resolve(nodeModulesPath, moduleName, distName, hasModern);
+      // Get pkg.json
+      const pkg = moduleContents.find((name) => name === 'package.json');
+      if (!pkg)  return false;
+      const fields = JSON.parse(fs.readFileSync(path.resolve(nodeModulesPath, moduleName, 'package.json')));
+      if (!fields.syntax) return false
+      if (!fields.syntax.esmodules) return false;
+      this.cache[moduleName] = path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
+      return path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
     }
   }
 }
