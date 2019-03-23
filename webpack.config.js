@@ -3,7 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const modules = require('webpack-modules');
 const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
-const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
+const ModernResolutionPlugin = require('webpack-syntax-resolver-plugin');
+// const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
 const babelConfig = require('./.babelrc');
 
 const env = babelConfig.env;
@@ -16,7 +17,7 @@ function makeConfig(mode) {
 
   // multiple builds in production
   if (isProduction) {
-    plugins.push(new HtmlWebpackEsmodulesPlugin({ mode }))
+    plugins.push(new HtmlWebpackEsmodulesPlugin(mode))
   }
 
   if (!isProduction) {
@@ -26,8 +27,11 @@ function makeConfig(mode) {
   return {
     mode: process.env.NODE_ENV || 'development',
     devtool: 'none',
-    entry: {
+    entry: mode === 'legacy' ? {
+      fetch: 'whatwg-fetch',
       main: './src/index.js',
+    } : {
+      main: './src/index.js'
     },
     context: path.resolve(__dirname, './'),
     devServer: {
@@ -54,7 +58,7 @@ function makeConfig(mode) {
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: './index.html' }),
       ...plugins
-    ],
+    ].filter(Boolean),
     module: {
       rules: [
         {
@@ -81,6 +85,7 @@ function makeConfig(mode) {
       alias: {
         react: 'preact/compat',
         'react-dom': 'preact/compat',
+        "preact": path.resolve(__dirname, 'node_modules', 'preact'),
         // "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
       },
       plugins: mode === 'modern' ? [new ModernResolutionPlugin()] : undefined,

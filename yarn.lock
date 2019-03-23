@@ -463,7 +463,7 @@
     "@babel/helper-get-function-arity" "^7.0.0"
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-transform-react-jsx@^7.3.0":
+"@babel/plugin-transform-react-jsx@7.3.0":
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx/-/plugin-transform-react-jsx-7.3.0.tgz#f2cab99026631c767e2745a5368b331cfe8f5290"
   dependencies:
@@ -1844,6 +1844,13 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
+exports-loader@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-0.7.0.tgz#84881c784dea6036b8e1cd1dac3da9b6409e21a5"
+  dependencies:
+    loader-utils "^1.1.0"
+    source-map "0.5.0"
+
 express@^4.16.2:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.4.tgz#fddef61926109e24c515ea97fd2f1bdbf62df12e"
@@ -2221,9 +2228,9 @@ homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-hooked-form@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/hooked-form/-/hooked-form-1.6.0.tgz#ec590e6a5d40b52d59f1e3c713c99571ca701a3a"
+hooked-form@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/hooked-form/-/hooked-form-1.6.1.tgz#73e20e4e935d7f1b3d30795c7cb95b13274f5de4"
 
 hpack.js@^2.1.6:
   version "2.1.6"
@@ -2341,6 +2348,13 @@ import-local@^2.0.0:
   dependencies:
     pkg-dir "^3.0.0"
     resolve-cwd "^2.0.0"
+
+imports-loader@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/imports-loader/-/imports-loader-0.8.0.tgz#030ea51b8ca05977c40a3abfd9b4088fe0be9a69"
+  dependencies:
+    loader-utils "^1.0.2"
+    source-map "^0.6.1"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -3894,6 +3908,10 @@ source-map-url@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
 
+source-map@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.0.tgz#0fe96503ac86a5adb5de63f4e412ae4872cdbe86"
+
 source-map@^0.5.0, source-map@^0.5.6:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
@@ -4380,9 +4398,9 @@ webpack-log@^2.0.0:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
 
-webpack-module-nomodule-plugin@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/webpack-module-nomodule-plugin/-/webpack-module-nomodule-plugin-0.0.3.tgz#b6de55feae1bb80e468c73cb539e1022d3883e61"
+webpack-module-nomodule-plugin@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/webpack-module-nomodule-plugin/-/webpack-module-nomodule-plugin-0.0.5.tgz#f9f6877bd442b9f1ea49923fd1c3d72bc0c32d2d"
   dependencies:
     fs-extra "7.0.1"
 
@@ -4396,6 +4414,10 @@ webpack-sources@^1.1.0, webpack-sources@^1.3.0:
   dependencies:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
+
+webpack-syntax-resolver-plugin@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/webpack-syntax-resolver-plugin/-/webpack-syntax-resolver-plugin-0.0.1.tgz#bfbc58506b83596fd5f98957d1bea1fa8909724c"
 
 webpack@4.29.6:
   version "4.29.6"
@@ -4436,6 +4458,10 @@ websocket-driver@>=0.5.1:
 websocket-extensions@>=0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
+
+whatwg-fetch@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
 
 which-module@^2.0.0:
   version "2.0.0"
