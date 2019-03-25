@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const modules = require('webpack-modules');
 const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
-const ModernResolutionPlugin = require('webpack-syntax-resolver-plugin');
-// const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
+// const ModernResolutionPlugin = require('webpack-syntax-resolver-plugin');
+const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
 const babelConfig = require('./.babelrc');
 
 const env = babelConfig.env;
@@ -46,6 +46,7 @@ function makeConfig(mode) {
       open: true,
       overlay: true,
     },
+    stats: 'minimal',
     output: {
       chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
       filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.modern.js' : '.js'}`,
@@ -86,7 +87,6 @@ function makeConfig(mode) {
         react: 'preact/compat',
         'react-dom': 'preact/compat',
         "preact": path.resolve(__dirname, 'node_modules', 'preact'),
-        // "hooked-form": mode === 'modern' ? "hooked-form/dist/hooked-form.modern.js" : "hooked-form",
       },
       plugins: mode === 'modern' ? [new ModernResolutionPlugin()] : undefined,
     },

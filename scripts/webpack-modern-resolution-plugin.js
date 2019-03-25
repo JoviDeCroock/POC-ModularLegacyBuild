@@ -51,23 +51,47 @@ class ModernResolverPlugin {
     if (moduleName.startsWith('./') || moduleName.startsWith('../') || moduleName.includes('.modern')) return false;
     if (this.exists === undefined || this.exists) {
       if (this.cache[moduleName]) return this.cache[moduleName];
-      // does our node_moduels path exist?
+      // does our node_modules path exist?
       this.exists = fs.existsSync(nodeModulesPath);
       if (!this.exists) return false;
       // Get all our modules.
       const contents = fs.readdirSync(nodeModulesPath);
       // See if our request name exists.
-      const moduleExists = contents.find((name) => name === moduleName);
+      let moduleExists;
+      if (moduleName.split('/').length > 0) {
+        const mName = moduleName.split('/')[0];
+        moduleExists = contents.find((name) => name === mName)
+      } else {
+        moduleExists = contents.find((name) => name === moduleName)
+      }
       if (!moduleExists) return false;
+      let moduleContents;
+
       // Get the files from the libraray
-      const moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName));
+      if (moduleName.split('/').length > 0) {
+        moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, ...moduleName.split('/')));
+      } else {
+        moduleContents = fs.readdirSync(path.resolve(nodeModulesPath, moduleName));
+      }
       // Get pkg.json
       const pkg = moduleContents.find((name) => name === 'package.json');
       if (!pkg)  return false;
-      const fields = JSON.parse(fs.readFileSync(path.resolve(nodeModulesPath, moduleName, 'package.json')));
+
+      let fields;
+      if (moduleName.split('/').length > 0) {
+        fields = JSON.parse(fs.readFileSync(path.resolve(nodeModulesPath, ...moduleName.split('/'), 'package.json')));
+      } else {
+        fields = JSON.parse(fs.readFileSync(path.resolve(nodeModulesPath, moduleName, 'package.json')));
+      }
+
       if (!fields.syntax) return false
       if (!fields.syntax[this.target]) return false;
-      this.cache[moduleName] = path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
+
+      if (moduleName.split('/').length > 0) {
+        this.cache[moduleName] = path.resolve(nodeModulesPath, ...moduleName.split('/'), fields.syntax.esmodules);
+      } else {
+        this.cache[moduleName] = path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
+      }
       return path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
     }
   }
