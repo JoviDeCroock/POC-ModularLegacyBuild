@@ -9,9 +9,9 @@ const defaultIgnoredModules = ['core-js'];
 
 class ModernResolverPlugin {
 
-  constructor({ nameRegex, ignoredModules = [] } = {}) {
+  constructor({ ignoredModules = [], syntaxTarget = 'esmodules' } = {}) {
     this.cache = {};
-    this.nameRegex = nameRegex
+    this.target = syntaxTarget;
     this.ignoredModules = [...defaultIgnoredModules, ...ignoredModules];
   }
 
@@ -66,7 +66,7 @@ class ModernResolverPlugin {
       if (!pkg)  return false;
       const fields = JSON.parse(fs.readFileSync(path.resolve(nodeModulesPath, moduleName, 'package.json')));
       if (!fields.syntax) return false
-      if (!fields.syntax.esmodules) return false;
+      if (!fields.syntax[this.target]) return false;
       this.cache[moduleName] = path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
       return path.resolve(nodeModulesPath, moduleName, fields.syntax.esmodules);
     }
