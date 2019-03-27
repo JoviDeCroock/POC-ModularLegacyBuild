@@ -46,7 +46,7 @@ function makeConfig(mode) {
       open: true,
       overlay: true,
     },
-    stats: 'minimal',
+    stats: 'normal',
     output: {
       chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
       filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.modern.js' : '.js'}`,
