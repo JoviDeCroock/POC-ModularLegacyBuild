@@ -2,12 +2,23 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const modules = require('webpack-modules');
-const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
+// const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
 // const ModernResolutionPlugin = require('webpack-syntax-resolver-plugin');
 const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
+const HtmlWebpackEsmodulesPlugin = require('./scripts/webpack-module-nomodule-plugin');
 const babelConfig = require('./.babelrc');
 
 const env = babelConfig.env;
+
+// const modernTerser = new TerserPlugin({
+//   cache: true,
+//   parallel: true,
+//   sourceMap: true,
+//   terserOptions: {
+//     ecma: 8,
+//     safari10: true
+//   }
+// });
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
@@ -55,6 +66,7 @@ function makeConfig(mode) {
     },
     optimization: {
       splitChunks: { chunks: 'initial' },
+      // minimizer: mode === 'legacy' ? undefined : [modernTerser],
     },
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: './index.html' }),

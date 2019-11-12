@@ -36,18 +36,7 @@ module.exports = {
       ],
     },
     modern: {
-      presets: [
-        [
-          "@babel/preset-env", {
-            ...defaultEnv,
-            corejs: 3,
-            // TODO: don't copy this in production apps yet, the two last excludes need thorough testing.
-            exclude: ["@babel/plugin-transform-typeof-symbol", "@babel/plugin-transform-async-to-generator", "@babel/plugin-transform-regenerator"],
-            targets: { esmodules: true },
-            useBuiltIns: 'usage',
-          }
-        ]
-      ],
+      presets: ['@babel/preset-modules'],
       plugins,
     }
   }
