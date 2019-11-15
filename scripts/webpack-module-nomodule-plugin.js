@@ -111,16 +111,21 @@ class HtmlWebpackEsmodulesPlugin {
 
     const legacyScripts = (this.modern ? existingAssets : body).filter(tag => tag.tagName === 'script' && tag.attributes.type !== 'module');
     const modernScripts = (this.modern ? body : existingAssets).filter(tag => tag.tagName === 'script' && tag.attributes.type === 'module');
-    const scripts = body.filter(tag => tag.tagName !== 'script');
+    const scripts = body.filter(tag => tag.tagName === 'script');
     scripts.forEach(s => {
       body.splice(body.indexOf(s), 1);
     })
+    console.log('newBody', body);
 
     modernScripts.forEach(modernScript => {
       head.push({ tagName: 'link', attributes: { rel: 'modulepreload', href: modernScript.attributes.src } });
     })
+    console.log('modern', modernScripts);
+    console.log('legacy', legacyScripts);
+    const loadScript = makeLoadScript(modernScripts, legacyScripts);
+    console.log(loadScript);
     head.push({ tagName: 'script', attributes: { type: 'module' }, innerHTML: selfScript, voidTag: false });
-    head.push({ tagName: 'script', innerHTML: makeLoadScript(modernScripts, legacyScripts), voidTag: false });
+    head.push({ tagName: 'script', innerHTML: loadScript, voidTag: false });
 
     fs.removeSync(tempFilename);
     cb();

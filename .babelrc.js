@@ -1,17 +1,8 @@
 const plugins = [
   "@babel/plugin-syntax-dynamic-import",
   "@babel/plugin-proposal-export-default-from",
-  [
-    require.resolve('@babel/plugin-transform-react-jsx'),
-  ],
+  '@babel/plugin-transform-react-jsx',
 ];
-
-const defaultEnv = {
-  debug: false,
-  exclude: ["@babel/plugin-transform-typeof-symbol"],
-  modules: false,
-  loose: true,
-}
 
 module.exports = {
   env: {
@@ -19,7 +10,9 @@ module.exports = {
       presets: [
         [
           "@babel/preset-env", {
-            ...defaultEnv,
+            exclude: ["@babel/plugin-transform-typeof-symbol"],
+            modules: false,
+            loose: true,
             corejs: 3,
             targets: {
               browsers: ["last 2 versions", "ie >= 11"]
@@ -30,9 +23,7 @@ module.exports = {
       ],
       plugins: [
         ...plugins,
-        ["@babel/plugin-transform-runtime", {
-          corejs: 3,
-        }]
+        ["@babel/plugin-transform-runtime", { corejs: 3 }]
       ],
     },
     modern: {

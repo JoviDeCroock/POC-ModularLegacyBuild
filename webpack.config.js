@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const modules = require('webpack-modules');
+const TerserPlugin = require('terser-webpack-plugin');
 // const HtmlWebpackEsmodulesPlugin = require('webpack-module-nomodule-plugin');
 // const ModernResolutionPlugin = require('webpack-syntax-resolver-plugin');
 const ModernResolutionPlugin = require('./scripts/webpack-modern-resolution-plugin');
@@ -10,15 +11,15 @@ const babelConfig = require('./.babelrc');
 
 const env = babelConfig.env;
 
-// const modernTerser = new TerserPlugin({
-//   cache: true,
-//   parallel: true,
-//   sourceMap: true,
-//   terserOptions: {
-//     ecma: 8,
-//     safari10: true
-//   }
-// });
+const modernTerser = new TerserPlugin({
+  cache: true,
+  parallel: true,
+  sourceMap: true,
+  terserOptions: {
+    ecma: 8,
+    safari10: true
+  }
+});
 
 function makeConfig(mode) {
   const { NODE_ENV } = process.env;
@@ -57,7 +58,7 @@ function makeConfig(mode) {
       open: true,
       overlay: true,
     },
-    stats: 'normal',
+    stats: 'none',
     output: {
       chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
       filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.modern.js' : '.js'}`,
@@ -66,7 +67,7 @@ function makeConfig(mode) {
     },
     optimization: {
       splitChunks: { chunks: 'initial' },
-      // minimizer: mode === 'legacy' ? undefined : [modernTerser],
+      minimizer: mode === 'legacy' ? undefined : [modernTerser],
     },
     plugins: [
       new HtmlWebpackPlugin({ inject: true, template: './index.html' }),
