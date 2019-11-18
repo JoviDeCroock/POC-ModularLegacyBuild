@@ -3438,6 +3438,13 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+native-url@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.2.1.tgz#af34e7ade00049a880dbd476f6fc80ffbb4095ef"
+  integrity sha512-1wtxUvRw9yfnqbP/gI7rWnRx3boHosUXz2d+EahWafx86gG0EdxbglqhA6hSKybteH6uLLN867yNmh4cnqndvw==
+  dependencies:
+    querystring "^0.2.0"
+
 needle@^2.2.1:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.2.4.tgz#51931bff82533b1928b7d1d69e01f1b00ffd2a4e"
@@ -4019,7 +4026,7 @@ querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
 
-querystring@0.2.0:
+querystring@0.2.0, querystring@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 

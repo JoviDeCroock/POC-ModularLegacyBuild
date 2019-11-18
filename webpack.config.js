@@ -58,7 +58,7 @@ function makeConfig(mode) {
       open: true,
       overlay: true,
     },
-    stats: 'none',
+    stats: 'normal',
     output: {
       chunkFilename: `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}`,
       filename: isProduction ? `[name]-[contenthash]${mode === 'modern' ? '.modern.js' : '.js'}` : `[name]${mode === 'modern' ? '.modern.js' : '.js'}`,
@@ -100,6 +100,7 @@ function makeConfig(mode) {
         react: 'preact/compat',
         'react-dom': 'preact/compat',
         "preact": path.resolve(__dirname, 'node_modules', 'preact'),
+        ...(mode === 'modern' ? { 'url': 'native-url' } : {})
       },
       plugins: mode === 'modern' ? [new ModernResolutionPlugin()] : undefined,
     },

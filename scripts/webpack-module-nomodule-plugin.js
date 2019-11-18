@@ -115,15 +115,11 @@ class HtmlWebpackEsmodulesPlugin {
     scripts.forEach(s => {
       body.splice(body.indexOf(s), 1);
     })
-    console.log('newBody', body);
 
     modernScripts.forEach(modernScript => {
       head.push({ tagName: 'link', attributes: { rel: 'modulepreload', href: modernScript.attributes.src } });
     })
-    console.log('modern', modernScripts);
-    console.log('legacy', legacyScripts);
     const loadScript = makeLoadScript(modernScripts, legacyScripts);
-    console.log(loadScript);
     head.push({ tagName: 'script', attributes: { type: 'module' }, innerHTML: selfScript, voidTag: false });
     head.push({ tagName: 'script', innerHTML: loadScript, voidTag: false });
 

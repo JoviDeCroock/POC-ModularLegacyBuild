@@ -18,47 +18,16 @@ To see this code in action:
 3. open in chrome, look at network tab
 4. open in IE/Safari and look at network tab.
 
-You'll see that your legacy nevergreen browser pulls the old version while the newer one pulls the recent version.
-
-Note that these steps happened with a build where polyfills were excluded for the evergreen build,
-this due to the fact that Promise, Object.assign, ... Does not need polyfilling.
-
-The current build won't have these results since I'm experimenting with newer ways of excluding polyfills.
-
-NEVERGREEN:
 ```
-                                  Asset       Size  Chunks             Chunk Names
-           main-a7dccdced5e63d2e3fa9.js   1.42 KiB       0  [emitted]  main
-       main-a7dccdced5e63d2e3fa9.js.map   1.11 KiB       0  [emitted]  main
+Evergreen
+main: 2.38KiB
+vendors: 48KiB
+
+Nevergreen
+main: 2.85KiB
+vendors: 78KiB
+fetch-polyfill: 8.7KiB
 ```
 
-EVERGREEN:
-```
-                                  Asset       Size  Chunks             Chunk Names
-           main-134a83a4df9e42806ef7.mjs  302 bytes       0  [emitted]  main
-       main-134a83a4df9e42806ef7.mjs.map  651 bytes       0  [emitted]  main
-```
-
-## More realistic with dependencies
-
-NEVERGREEN:
-```
-                                  index.html  992 bytes          [emitted]
-                main-63c49f48529ee5be17f3.js   3.25 KiB       0  [emitted]  main
-            main-63c49f48529ee5be17f3.js.map   9.69 KiB       0  [emitted]  main
-        vendors~main-012b13a610477c264d67.js    183 KiB       1  [emitted]  vendors~main
-    vendors~main-012b13a610477c264d67.js.map    596 KiB       1  [emitted]  vendors~main
-```
-
-EVERGREEN:
-```
-                                   index.html  994 bytes          [emitted]
-                main-bff9f6f0183683938310.mjs   1.87 KiB       0  [emitted]  main
-            main-bff9f6f0183683938310.mjs.map   9.26 KiB       0  [emitted]  main
-        vendors~main-5b8745cfb31d13a60507.mjs    108 KiB       1  [emitted]  vendors~main
-    vendors~main-5b8745cfb31d13a60507.mjs.map    252 KiB       1  [emitted]  vendors~main
-```
-
-Safe to note that the parse time for EVERGREEN is close to half of the nevergreen.
-
-These evergreen vendor bundles would be a lot smaller if they were exported as an esModule instead of an es5 module.
+Total legacy: 89.55KiB
+Total vendors: 50.40KiB
